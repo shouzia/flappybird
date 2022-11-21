@@ -1,3 +1,4 @@
+import random
 import pygame
 
 
@@ -12,18 +13,18 @@ class Bird(object):
         self.Bird_X = 120
         self.Bird_Y = 350
         self.jump = False
-        self.jump_Speed = 10
-        self.gravity = 2
+        self.jump_Speed = 6
+        self.gravity = 0
         self.dead = False
 
 
     # 小鸟移动
     def birdupdate(self):
         if self.jump:
-            self.jump_Speed-=1
+            self.jump_Speed-=0.9
             self.Bird_Y-=self.jump_Speed
         else:
-            self.gravity+=0.1
+            # self.gravity+=0.1
             self.Bird_Y+=self.gravity
         self.bird_Rect[1]=self.Bird_Y
             
@@ -33,6 +34,7 @@ class Pipe(object):
         self.pipes_X=400
         self.pipe_UP=pygame.image.load("files\images\pipe_down.png")
         self.pipe_down=pygame.image.load("files\images\pipe_up.png")
+        self.pipe_height=-100
 
     def pipeipdate(self):
         self.pipes_X-=2
@@ -40,6 +42,7 @@ class Pipe(object):
             # global获取类之外的变量
             global score
             score+=1
+            self.pipe_height=random.randint(100,320)-320
             self.pipes_X=400
 
 
@@ -66,7 +69,7 @@ def creaceMap():
     pygame.display.update()
 
 def cheekDead():
-    upRect=pygame.Rect(pipe.pipes_X,-300,pipe.pipe_UP.get_width(),pipe.pipe_UP.get_height())
+    upRect=pygame.Rect(pipe.pipes_X,-100,pipe.pipe_UP.get_width(),pipe.pipe_UP.get_height())
     downRect=pygame.Rect(pipe.pipes_X,400,pipe.pipe_down.get_width(),pipe.pipe_down.get_height())
     if upRect.colliderect(bird.bird_Rect) or downRect.colliderect(bird.bird_Rect):
         bird.dead=True
