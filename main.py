@@ -21,10 +21,10 @@ class Bird(object):
     # 小鸟移动
     def birdupdate(self):
         if self.jump:
-            self.jump_Speed-=0.9
+            self.jump_Speed-=0.75
             self.Bird_Y-=self.jump_Speed
         else:
-            # self.gravity+=0.1
+            self.gravity+=1
             self.Bird_Y+=self.gravity
         self.bird_Rect[1]=self.Bird_Y
             
@@ -33,6 +33,7 @@ class Pipe(object):
     def __init__(self):
         self.pipes_X=400
         self.pipe_UP=pygame.image.load("files\images\pipe_down.png")
+        self.pipe_UP=pygame.transform.scale(self.pipe_UP,(52,320*1.2))
         self.pipe_down=pygame.image.load("files\images\pipe_up.png")
         self.pipe_height=-100
 
@@ -40,9 +41,9 @@ class Pipe(object):
         self.pipes_X-=2
         if self.pipes_X<-40:
             # global获取类之外的变量
-            global score
+            global score 
             score+=1
-            self.pipe_height=random.randint(100,320)-320
+            self.pipe_height=random.randint(50,270)-320
             self.pipes_X=400
 
 
@@ -51,8 +52,8 @@ def creaceMap():
     background = pygame.image.load("files\images\\bg_day.png")
     background = pygame.transform.scale(background, (size))
     screen.blit(background, (0, 0))
-    screen.blit(pipe.pipe_UP,(pipe.pipes_X,-100))
-    screen.blit(pipe.pipe_down,(pipe.pipes_X,400))
+    screen.blit(pipe.pipe_UP,(pipe.pipes_X,pipe.pipe_height))
+    screen.blit(pipe.pipe_down,(pipe.pipes_X,pipe.pipe_height+580))
     pipe.pipeipdate()
 
     if bird.dead:
@@ -69,8 +70,8 @@ def creaceMap():
     pygame.display.update()
 
 def cheekDead():
-    upRect=pygame.Rect(pipe.pipes_X,-100,pipe.pipe_UP.get_width(),pipe.pipe_UP.get_height())
-    downRect=pygame.Rect(pipe.pipes_X,400,pipe.pipe_down.get_width(),pipe.pipe_down.get_height())
+    upRect=pygame.Rect(pipe.pipes_X,pipe.pipe_height,pipe.pipe_UP.get_width(),pipe.pipe_UP.get_height())
+    downRect=pygame.Rect(pipe.pipes_X,pipe.pipe_height+580,pipe.pipe_down.get_width(),pipe.pipe_down.get_height())
     if upRect.colliderect(bird.bird_Rect) or downRect.colliderect(bird.bird_Rect):
         bird.dead=True
         return True
