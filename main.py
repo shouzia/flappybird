@@ -149,5 +149,5 @@ if __name__ == '__main__':
             over_font1=pygame.font.Font("files\\al.ttf",28)
             over_font1=over_font1.render(startGame,True,(174,255,0))
             screen.blit(background, (0, 0))
-            screen.blit(over_font1,(55,150))
+            screen.blit(over_font1,(55,300))
             pygame.display.update()
