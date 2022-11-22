@@ -13,8 +13,11 @@ class Bird(object):
         self.Bird_X = 120
         self.Bird_Y = 350
         self.jump = False
+        # 小鸟跳跃高度
         self.jump_Speed = 6
-        self.gravity = 0
+        # 小鸟重力
+        self.gravity = 1
+        # 小鸟是否死亡
         self.dead = False
 
 
@@ -35,43 +38,54 @@ class Pipe(object):
         self.pipe_UP=pygame.image.load("files\images\pipe_down.png")
         self.pipe_UP=pygame.transform.scale(self.pipe_UP,(52,320*1.2))
         self.pipe_down=pygame.image.load("files\images\pipe_up.png")
+        # 第一次管道高度为-100
         self.pipe_height=-100
 
     def pipeipdate(self):
         self.pipes_X-=2
+        # 管道x左边为负数
         if self.pipes_X<-40:
-            # global获取类之外的变量
+            # global获取类之外的变量 分数加1
             global score 
             score+=1
+            # 随机管道高度
             self.pipe_height=random.randint(50,270)-320
+            # 管道x轴刷新 生成新的
             self.pipes_X=400
 
 
 # 生成背景地图
 def creaceMap():
+    # 创建背景精灵
     background = pygame.image.load("files\images\\bg_day.png")
+    # 放大背景图片
     background = pygame.transform.scale(background, (size))
+    # 生成背景图片
     screen.blit(background, (0, 0))
+    # 生成上随机管道
     screen.blit(pipe.pipe_UP,(pipe.pipes_X,pipe.pipe_height))
+    # 生成下随机管道
     screen.blit(pipe.pipe_down,(pipe.pipes_X,pipe.pipe_height+580))
+    # 更新管道
     pipe.pipeipdate()
-
     if bird.dead:
         bird.state=2
     elif bird.jump:
         bird.state=1
-    
     screen.blit(bird.BirdState[bird.state],(bird.Bird_X,bird.Bird_Y))
     bird.birdupdate()
-    
+    # 检测分数
     score_font=font.render("分数"+ str(score),True,(255,105,180))
     screen.blit(score_font,(150,100))
     # 更新屏幕
     pygame.display.update()
-
+# 检测是否小鸟死亡
 def cheekDead():
+    # 创建上管道的矩形
     upRect=pygame.Rect(pipe.pipes_X,pipe.pipe_height,pipe.pipe_UP.get_width(),pipe.pipe_UP.get_height())
+    # 创建下管道的矩形
     downRect=pygame.Rect(pipe.pipes_X,pipe.pipe_height+580,pipe.pipe_down.get_width(),pipe.pipe_down.get_height())
+    # 检测碰撞
     if upRect.colliderect(bird.bird_Rect) or downRect.colliderect(bird.bird_Rect):
         bird.dead=True
         return True
@@ -81,7 +95,7 @@ def cheekDead():
     else:
         return False
 
-
+# 游戏结束界面
 def getResult():
     text1="游戏结束"
     text2="你的得分是"+str(score)
@@ -92,7 +106,7 @@ def getResult():
     screen.blit(over_font1,(95,150))
     screen.blit(over_font2,(70,250))
     pygame.display.update()
-
+# 开启游戏函数
 def startgame():
     background = pygame.image.load("files\images\\bg_day.png")
     background = pygame.transform.scale(background, (size))
@@ -138,6 +152,7 @@ if __name__ == '__main__':
             # 检测点击关闭关闭窗口
             if event.type == pygame.QUIT:
                 quit()
+                # pygame获取键盘事件
             if event.type==pygame.MOUSEBUTTONUP or event.type==pygame.KEYUP and not bird.dead:
                 bird.jump=True
                 bird.gravity=5
