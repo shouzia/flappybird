@@ -21,7 +21,7 @@ class Bird(object):
     # 小鸟移动
     def birdupdate(self):
         if self.jump:
-            self.jump_Speed-=0.75
+            self.jump_Speed-=0.65
             self.Bird_Y-=self.jump_Speed
         else:
             self.gravity+=1
@@ -93,6 +93,15 @@ def getResult():
     screen.blit(over_font2,(70,250))
     pygame.display.update()
 
+def startgame():
+    background = pygame.image.load("files\images\\bg_day.png")
+    background = pygame.transform.scale(background, (size))
+    startGame="点击或者按键盘开始游戏"
+    over_font1=pygame.font.Font("files\\al.ttf",28)
+    over_font1=over_font1.render(startGame,True,(173,255,47))
+    screen.blit(background, (0, 0))
+    screen.blit(over_font1,(55,300))
+    pygame.display.update()
 
 if __name__ == '__main__':
     pygame.init()
@@ -143,11 +152,4 @@ if __name__ == '__main__':
                 creaceMap()
                 bird.jump=True
         else:
-            background = pygame.image.load("files\images\\bg_day.png")
-            background = pygame.transform.scale(background, (size))
-            startGame="点击或者按键盘开始游戏"
-            over_font1=pygame.font.Font("files\\al.ttf",28)
-            over_font1=over_font1.render(startGame,True,(174,255,0))
-            screen.blit(background, (0, 0))
-            screen.blit(over_font1,(55,300))
-            pygame.display.update()
+            startgame()
