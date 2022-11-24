@@ -6,12 +6,15 @@ class Bird(object):
     # 类变量
     def __init__(self):
         self.bird_Rect=pygame.Rect(110,48,48,34)
-        self.BirdState = [pygame.image.load("files\images\\bird1_0.png")   ,
+        self.BirdState = [pygame.image.load("files\images\\bird1_0.png"),
                           pygame.image.load("files\images\\bird1_1.png"),
                           pygame.image.load("files\images\\bird1_2.png"), ]
         self.state = 0
+        # 默认X轴坐标
         self.Bird_X = 120
+        # 默认Y轴坐标
         self.Bird_Y = 350
+        # 开启跳跃
         self.jump = False
         # 小鸟跳跃高度
         self.jump_Speed = 6
@@ -24,6 +27,7 @@ class Bird(object):
     # 小鸟移动
     def birdupdate(self):
         if self.jump:
+            # 跳跃高度 越高跳的越低
             self.jump_Speed-=0.65
             self.Bird_Y-=self.jump_Speed
         else:
@@ -34,9 +38,11 @@ class Bird(object):
 # 管道类
 class Pipe(object):
     def __init__(self):
+        # 默认X轴坐标
         self.pipes_X=400
+        # 上管道精灵
         self.pipe_UP=pygame.image.load("files\images\pipe_down.png")
-        self.pipe_UP=pygame.transform.scale(self.pipe_UP,(52,320*1.2))
+        # 下管道精灵
         self.pipe_down=pygame.image.load("files\images\pipe_up.png")
         # 第一次管道高度为-100
         self.pipe_height=-100
